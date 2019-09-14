@@ -7,7 +7,7 @@ import java.nio.file.Paths;
 
 public class FilePartReader {
 
-    private String filePath = null;
+    private String filePath;
     private int fromLine = 0;
     private int toLine = 0;
 
@@ -21,18 +21,24 @@ public class FilePartReader {
         }
     }
 
-    public String read() throws IOException {
-        return Files.readString(Paths.get(filePath), StandardCharsets.US_ASCII);
+    public String read(){
+        StringBuilder line = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            while(br.readLine()!=null)
+                line.append(br.readLine());
+            return line.toString();
+        } catch (IOException e) {
+            return e.getMessage();
+        }
     }
 
 
-    String readLines() {
-        String line;
+     public String readLines() {
+        StringBuilder line = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
             for (int i = fromLine; i <= toLine; i++)
-                br.readLine();
-            line = br.readLine();
-            return line;
+                line.append(br.readLine());
+            return line.toString();
         } catch (IOException e) {
             return e.getMessage();
         }

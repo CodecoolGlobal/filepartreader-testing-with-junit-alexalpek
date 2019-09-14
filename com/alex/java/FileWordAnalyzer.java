@@ -14,8 +14,11 @@ public class FileWordAnalyzer {
     public List getWordsOrderedAlphabetically(){
         List<String> contentList = new ArrayList<>();
         String content = filePartReader.readLines();
-        Collections.addAll(contentList, content.split(" "));
-        Collections.sort(contentList);
+        Collections.addAll(contentList, content.split("\\W+"));
+        contentList.sort(String.CASE_INSENSITIVE_ORDER); //BAD
+        for (String word : contentList){
+            System.out.print(word + " ");
+        }
         return contentList;
     }
 
@@ -23,7 +26,7 @@ public class FileWordAnalyzer {
         List<String> contentList = new ArrayList<>();
         List<String> containsList = new ArrayList<>();
         String content = filePartReader.readLines();
-        Collections.addAll(contentList, content.split(" "));
+        Collections.addAll(contentList, content.split("\\W+"));
         for (String word : contentList){
             if (word.contains(subString)){
                 containsList.add(word);
@@ -38,13 +41,13 @@ public class FileWordAnalyzer {
         List<String> contentList = new ArrayList<>();
         List<String> palidromeList = new ArrayList<>();
         String content = filePartReader.readLines();
-        Collections.addAll(contentList, content.split(" "));
+        Collections.addAll(contentList, content.split("\\W+"));
         for (String word : contentList){
             wrd = wrd.append(word).reverse();
             if (word.contentEquals(wrd)){
                 palidromeList.add(word);
             }
-            wrd.deleteCharAt(0);
+            wrd.setLength(0);
         }
         return palidromeList;
     }
